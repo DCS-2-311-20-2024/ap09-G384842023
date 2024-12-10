@@ -44,6 +44,8 @@ function init() {
   ball.geometry.computeBoundingSphere();
   scene.add(ball);
 
+  
+
   const keyState = { w: false, a: false, s: false, d: false };
   let vx = 0, vz = 0;
 
