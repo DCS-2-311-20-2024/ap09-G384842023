@@ -87,7 +87,7 @@ function init() {
     if (life <= 0) {
       life = 3;
       score = 0;
-      resetBrick();
+      resetDot();
     }
     ballLive = true;
     speed = 10;
@@ -97,7 +97,7 @@ function init() {
     if (!ballLive) {
       startBall();
     }
-  });
+  },false);
 
   window.addEventListener("keydown", (event) => {
     switch (event.key.toLowerCase()) {
@@ -131,11 +131,11 @@ function init() {
       new THREE.BoxGeometry(vFrameD, vFrameH, vFrameW),
       new THREE.MeshPhongMaterial({ color: 0x333333 })
     );
-    tFrame.position.z = -(hFrameW - vFrameW) / 2;//-(vFrameD + hFrameD) / 2;
+    tFrame.position.z = -(hFrameW - vFrameW+ 2) / 2;//-(vFrameD + hFrameD) / 2;
     scene.add(tFrame);
     //   下の枠
     const bFrame = tFrame.clone();
-    bFrame.position.z = (hFrameW - vFrameW) / 2;//(vFrameD + hFrameD) / 2;
+    bFrame.position.z = (hFrameW - vFrameW-1) / 2;//(vFrameD + hFrameD) / 2;
     scene.add(bFrame);
     //   左の枠
     const lFrame = new THREE.Mesh(
@@ -147,7 +147,7 @@ function init() {
 
     //   右の枠
     const rFrame = lFrame.clone();
-    rFrame.position.x = (vFrameD + hFrameD) / 2;//(hFrameW - vFrameW) / 2;
+    rFrame.position.x = (vFrameD + hFrameD -2.5) / 2;//(hFrameW - vFrameW) / 2;
     scene.add(rFrame); 
 
   }
@@ -157,8 +157,8 @@ function init() {
   const vLimit = hFrameW / 2 - vFrameW;
   function frameCheck() {
     // 右の壁
-    if (ball.position.x > hLimit) {
-      ball.position.x = hLimit - ballR; // 壁の内側に位置を戻す
+    if (ball.position.x > hLimit - 1.5) {
+      ball.position.x = hLimit -1.5 - ballR; // 壁の内側に位置を戻す
       vx = 0; // x方向の速度を停止
     }
     // 左の壁
@@ -178,34 +178,68 @@ function init() {
     }
   }
 
+
+  let ghost;
   //壁-------------------
   // ボックスのサイズと位置を定義
   const boxSize = 1;  // ボックスのサイズ（高さは1で固定）
   const mazeLayout = [
+    /*
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0],
-    [0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0],
-    [0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0],
-    [0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0],
-    [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0],
-    [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0],
-    [0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0],
-    [0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    */
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    
   ];  
   
   
 
   const maze = new THREE.Group();  // 迷路をまとめるグループ
+  // ボールの初期位置
+  const ballX = ball.position.x;
+  const ballZ = ball.position.z;
+
+  let enemyVelocity = new THREE.Vector3(0.1, 0, 0); // x, y, z 軸方向の速度
+  let enemyDirection = new THREE.Vector3(1, 0, 0); // 初期の進行方向（右方向）
+  let initialPosition = new THREE.Vector3(); // 初期位置を保持
+
 
   // 迷路を作成する関数
   function createMaze() {
+    const boxSize1 = 1; // 壁のサイズ
     for (let r = 0; r < mazeLayout.length; r++) {
       for (let c = 0; c < mazeLayout[r].length; c++) {
         if (mazeLayout[r][c] === 1) {  // 障害物（1の部分）
@@ -213,139 +247,149 @@ function init() {
             new THREE.BoxGeometry(boxSize, 0.25, boxSize), // 幅、高さ、奥行き
             new THREE.MeshLambertMaterial({ color: 0x555555 })
           );
-          box.position.set(c * boxSize - boxSize * mazeLayout[r].length / 2, 0.5, r * boxSize - boxSize * mazeLayout.length / 2);
+          box.position.set(c * boxSize1 - boxSize1 * mazeLayout[r].length / 2, 0.5, r * boxSize1 - boxSize1 * mazeLayout.length / 2);
           maze.add(box);  // 迷路のグループに追加
-        }
+        } 
       }
     }
     scene.add(maze);  // シーンに迷路を追加
   }
-  
+
   // 迷路を作成
   createMaze();
 
-  //壁との衝突
-  // 衝突判定と反射処理
-function boxCheck() {
-  const ballSphere = ball.geometry.boundingSphere.clone();
-  ballSphere.translate(ball.position); // ボールの現在位置を反映
+  const dots = new THREE.Group();
 
-  maze.children.forEach((box) => {
-    // ボックスのバウンディングボックスを取得
-    const boxBound = new THREE.Box3().setFromObject(box);
-
-    // 衝突判定
-    if (boxBound.intersectsSphere(ballSphere)) {
-      // ボールがボックスに衝突したら、移動を止める
-      vx = 0; // x方向の速度を停止
-      vz = 0; // z方向の速度を停止
-
-      // 衝突後にボールが壁の内側に入り込まないように、位置を修正
-      const ballPos = ball.position;
-      const boxCenter = boxBound.getCenter(new THREE.Vector3());
-      const boxSize = boxBound.getSize(new THREE.Vector3());
-
-      // 衝突方向に応じてボールの位置を調整
-      if (Math.abs(ballPos.x - boxCenter.x) > boxSize.x / 2) {
-        // 横方向の衝突
-        ball.position.x = ballPos.x > boxCenter.x
-          ? boxBound.max.x + ballR
-          : boxBound.min.x - ballR;
-      }
-      if (Math.abs(ballPos.z - boxCenter.z) > boxSize.z / 2) {
-        // 縦方向の衝突
-        ball.position.z = ballPos.z > boxCenter.z
-          ? boxBound.max.z + ballR
-          : boxBound.min.z - ballR;
-      }
-    }
-  });
-}
-
-  
-
-  // ドット ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-// 点の生成
-const dots = new THREE.Group();
-
-// 枠の中心位置（枠がそのままシーン内で配置されている位置）
-const frameCenterX = 0;
-const frameCenterZ = 0;
-
-function makeDots() {
-  const radius = 0.15;  // 球体の半径
-  const nSeg = 16;  // 球体の分割数
-  const gapX = 1;  // 横方向の隙間
-  const gapZ = 1;  // 縦方向の隙間
-
-  // ボールの初期位置
-  const ballX = ball.position.x;
-  const ballZ = ball.position.z;
-
-  // 点を並べる
-  for (let r = -8; r < 9; r++) {
-    for (let c = -14; c < 15; c++) {
-      const x = gapX * c;  // 点のx座標
-      const z = gapZ * r;  // 点のz座標
-
-      
-        // ボールとドットが重ならないように確認
-        if (!(x == ballX && z == ballZ)) {
+  function createDots(){
+    const nSeg = 16;  // 球体の分割数
+    const radius = 0.15;
+    const boxSize1 = 1; // 壁のサイズ
+    for (let r = 0; r < mazeLayout.length; r++) {
+      for (let c = 0; c < mazeLayout[r].length; c++) {
+        if (mazeLayout[r][c] === 0) { // 通路
           const dot = new THREE.Mesh(
             new THREE.SphereGeometry(radius, nSeg, nSeg),
             new THREE.MeshLambertMaterial({ color: 0xffffff })
           );
-          dot.position.set(x, 0, z);
+          dot.position.set(c * boxSize1 - boxSize1 * mazeLayout[r].length / 2, 0, r * boxSize1 - boxSize1 * mazeLayout.length / 2);
           dot.geometry.computeBoundingSphere();
-          dot.geometry.computeBoundingBox();  // バウンディングボックスを計算
-          dots.add(dot); // グループに追加
+          dots.add(dot);
+          nDot++;
         }
-      
-    }
-  }
-  scene.add(dots); // シーンに追加
-}
-
-
-
-makeDots(); // 初回のみ呼び出してドットを生成
-
-// 点の衝突検出
-function dotCheck() {
-  let hit = false;
-  const sphere = ball.geometry.boundingSphere.clone();
-  sphere.translate(ball.position); // ボールの位置にバウンディングスフィアを合わせる
-  
-  // ドットを順番にチェック
-  dots.children.forEach((dot) => {
-    if (!hit && dot.visible) {
-      const dotSphere = dot.geometry.boundingSphere.clone(); // ドットのバウンディングスフィア
-      dotSphere.translate(dot.position); // ドットの位置にバウンディングスフィアを合わせる
-
-      // 衝突判定：ボールのバウンディングスフィアとドットのバウンディングスフィアが交差する場合
-      if (sphere.intersectsSphere(dotSphere)) {
-        hit = true;
-        dot.visible = false; // 点が消える
-        score += 100; // スコア加算（適宜変更）
-        
       }
     }
-  });
+    scene.add(dots);
+  }
+
+  createDots();
+
+  const ghosts = new THREE.Group();
+const initialPositions = []; // 初期位置を格納する配列
+
+function createGhost() {
+  const ghostSize = 0.7; // エネミーボックスのサイズ
+  for (let r = 0; r < mazeLayout.length; r++) {
+    for (let c = 0; c < mazeLayout[r].length; c++) {
+      if (mazeLayout[r][c] === 4) { // 迷路上の「4」がゴーストの位置
+        const ghost = new THREE.Mesh(
+          new THREE.BoxGeometry(ghostSize, ghostSize, ghostSize), // 立方体のサイズ
+          new THREE.MeshLambertMaterial({ color: 0x00ff00 }) // 緑色のマテリアル
+        );
+        ghost.position.set(
+          c * boxSize - boxSize * mazeLayout[r].length / 2,
+          boxSize / 2,
+          r * boxSize - boxSize * mazeLayout.length / 2
+        );
+        ghosts.add(ghost); // ゴーストをグループに追加
+        initialPositions.push(ghost.position.clone()); // 初期位置を保存
+      }
+    }
+  }
+  scene.add(ghosts); // ゴーストグループをシーンに追加
 }
 
+  createGhost();
 
 
+  // 壁との衝突処理
+  function boxCheck() {
+    const ballSphere = ball.geometry.boundingSphere.clone();
+    ballSphere.translate(ball.position);
+    maze.children.forEach((box) => {
+      if (box.geometry.type === "BoxGeometry") { // 壁のみチェック
+        const boxBound = new THREE.Box3().setFromObject(box);
 
-// 点の再表示
-function resetDots() {
-  nDot = 0;
-  dots.children.forEach((dot) => {
-    dot.visible = true;
-    nDot++;
-  });
-}
+        if (boxBound.intersectsSphere(ballSphere)) {
+          // ボールが壁に衝突
+          if (vx > 0 && ball.position.x < boxBound.min.x) {
+            ball.position.x = boxBound.min.x - ballR;
+          } else if (vx < 0 && ball.position.x > boxBound.max.x) {
+            ball.position.x = boxBound.max.x + ballR;
+          }
+
+          if (vz > 0 && ball.position.z < boxBound.min.z) {
+            ball.position.z = boxBound.min.z - ballR;
+          } else if (vz < 0 && ball.position.z > boxBound.max.z) {
+            ball.position.z = boxBound.max.z + ballR;
+          }
+
+          vx = 0;
+          vz = 0;
+        }
+      }
+    });
+  }
+
+  function resetDot() {
+    nDot = 0;
+    dots.children.forEach((dot) => {
+      dot.visible = true;
+      nDot++
+    });
+  }
+
+  //エサとの衝突
+  function dotCheck() {
+    let hit = false;
+    const ballSphere = ball.geometry.boundingSphere.clone();
+    ballSphere.translate(ball.position);
+    const sphere = ball.geometry.boundingSphere.clone();
+    sphere.translate(ball.position);
+    dots.children.forEach((dot) => {
+      if(!hit && dot.visible){
+        let sphere = dot.geometry.boundingSphere.clone();
+        sphere.translate(dots.position);
+        sphere.translate(dot.position);
+        if(ballSphere.intersectsSphere(sphere)){//ballSphere.intersectsSphere(dotSphere)
+          hit = true;
+          dot.visible = false;
+          nDot--;
+          score += 10;
+          if (nDot === 0) {
+            const bonus = 1000; 
+            score += bonus;
+            resetDot();
+          }
+        }
+      }
+    });
+  }
 
 
+  function ghostCheck() {
+    const ballSphere = ball.geometry.boundingSphere.clone();
+    ballSphere.translate(ball.position);
+  
+    ghosts.children.forEach((child) => {
+      if (child.geometry.type === "BoxGeometry" && child.material.color.getHex() === 0x00ff00) { // エネミーとのチェック（緑色のボックス）
+        const enemyBound = new THREE.Box3().setFromObject(child);
+  
+        if (enemyBound.intersectsSphere(ballSphere)) {
+          stopBall(); // エネミーに衝突したらボールを停止
+        }
+      }
+    });
+  }
 
   // 光源の設定
   const light = new THREE.SpotLight(0xffffff, 1000);
@@ -378,14 +422,27 @@ function resetDots() {
     // ゲーム画面の更新
     let delta = clock.getDelta(); // 経過時間の取得
     frameCheck(); // 枠の衝突判定
-    dotCheck(); // ブロックの衝突判定
-    boxCheck
+    boxCheck();//点、壁との衝突判定
+    dotCheck();
     moveBall(delta); // ボールの移動
     setScore(score); // スコア更新
+    ghostCheck();
     // 再描画
     requestAnimationFrame(render);
     renderer.render(scene, camera);
   }
+
+  // アニメーションループ
+function animate(delta) {
+  if (ballLive) {
+    moveBall(delta);
+    frameCheck();
+    boxCheck();
+    dotCheck();
+  }
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+}
 
   // GUIコントローラ
   const gui = new GUI();
