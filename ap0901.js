@@ -150,20 +150,20 @@ function init() {
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
     [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0 ,1],
     [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
     [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1],
+    [1, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
     [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 4, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1],
-    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     
   ];  
@@ -174,10 +174,6 @@ function init() {
   // ボールの初期位置
   const ballX = ball.position.x;
   const ballZ = ball.position.z;
-
-  let enemyVelocity = new THREE.Vector3(0.1, 0, 0); // x, y, z 軸方向の速度
-  let enemyDirection = new THREE.Vector3(1, 0, 0); // 初期の進行方向（右方向）
-  let initialPosition = new THREE.Vector3(); // 初期位置を保持
 
 
   // 迷路を作成する関数
@@ -209,7 +205,7 @@ function init() {
     const boxSize1 = 1; // 壁のサイズ
     for (let r = 0; r < mazeLayout.length; r++) {
       for (let c = 0; c < mazeLayout[r].length; c++) {
-        if (mazeLayout[r][c] === 0) { // 通路
+        if (mazeLayout[r][c] !== 1){ // 通路
           const dot = new THREE.Mesh(
             new THREE.SphereGeometry(radius, nSeg, nSeg),
             new THREE.MeshLambertMaterial({ color: 0xffffff })
@@ -307,7 +303,7 @@ function createGhost() {
         let sphere = dot.geometry.boundingSphere.clone();
         sphere.translate(dots.position);
         sphere.translate(dot.position);
-        if(ballSphere.intersectsSphere(sphere)){//ballSphere.intersectsSphere(dotSphere)
+        if(ballSphere.intersectsSphere(sphere)){
           hit = true;
           dot.visible = false;
           nDot--;
@@ -352,36 +348,36 @@ function createGhost() {
 
 
 
-function moveGhost(delta) {
-  ghosts.children.forEach((ghost, index) => {
-    const direction = ghostDirections[index];
-    
-    // 現在の位置を計算
-    const newX = ghost.position.x + direction.x * ghostSpeed * delta;
-    const newZ = ghost.position.z + direction.z * ghostSpeed * delta;
+  function moveGhost(delta) {
+    ghosts.children.forEach((ghost, index) => {
+      const direction = ghostDirections[index];
+      
+      // 現在の位置を計算
+      const newX = ghost.position.x + direction.x * ghostSpeed * delta;
+      const newZ = ghost.position.z + direction.z * ghostSpeed * delta;
 
-    // 次の位置で迷路の枠に衝突するか確認
-    const mazeRow = Math.round((newZ + boxSize * mazeLayout.length / 2) / boxSize);
-    const mazeCol = Math.round((newX + boxSize * mazeLayout[0].length / 2) / boxSize);
+      // 次の位置で迷路の枠に衝突するか確認
+      const mazeRow = Math.round((newZ + boxSize * mazeLayout.length / 2) / boxSize);
+      const mazeCol = Math.round((newX + boxSize * mazeLayout[0].length / 2) / boxSize);
 
-    if (
-      mazeRow < 0 || mazeRow >= mazeLayout.length ||
-      mazeCol < 0 || mazeCol >= mazeLayout[0].length ||
-      mazeLayout[mazeRow][mazeCol] === 1 // 壁に衝突
-    ) {
-      // 方向を反射させる
-      if (mazeLayout[mazeRow][Math.round((ghost.position.x + boxSize * mazeLayout[0].length / 2) / boxSize)] === 1) {
-        direction.z *= -1; // z方向を反転
+      if (
+        mazeRow < 0 || mazeRow >= mazeLayout.length ||
+        mazeCol < 0 || mazeCol >= mazeLayout[0].length ||
+        mazeLayout[mazeRow][mazeCol] === 1 // 壁に衝突
+      ) {
+        // 方向を反射させる
+        if (mazeLayout[mazeRow][Math.round((ghost.position.x + boxSize * mazeLayout[0].length / 2) / boxSize)] === 1) {
+          direction.z *= -1; // z方向を反転
+        }
+        if (mazeLayout[Math.round((ghost.position.z + boxSize * mazeLayout.length / 2) / boxSize)][mazeCol] === 1) {
+          direction.x *= -1; // x方向を反転
+        }
+      } else {
+        // 衝突していない場合、移動
+        ghost.position.set(newX, ghost.position.y, newZ);
       }
-      if (mazeLayout[Math.round((ghost.position.z + boxSize * mazeLayout.length / 2) / boxSize)][mazeCol] === 1) {
-        direction.x *= -1; // x方向を反転
-      }
-    } else {
-      // 衝突していない場合、移動
-      ghost.position.set(newX, ghost.position.y, newZ);
-    }
-  });
-}
+    });
+  }
 
 
   
