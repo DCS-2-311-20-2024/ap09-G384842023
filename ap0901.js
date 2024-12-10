@@ -120,63 +120,6 @@ function init() {
   });
 
 
-  // 外枠 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-  // 枠の作成
-  //   大きさの定義
-  const hFrameW = 20;  const hFrameH = 2;  const hFrameD = 1;
-  const vFrameW = 1;  const vFrameH = 1.2;  const vFrameD = 30;
-  {
-    //   上の枠
-    const tFrame = new THREE.Mesh(
-      new THREE.BoxGeometry(vFrameD, vFrameH, vFrameW),
-      new THREE.MeshPhongMaterial({ color: 0x333333 })
-    );
-    tFrame.position.z = -(hFrameW - vFrameW+ 2) / 2;//-(vFrameD + hFrameD) / 2;
-    scene.add(tFrame);
-    //   下の枠
-    const bFrame = tFrame.clone();
-    bFrame.position.z = (hFrameW - vFrameW-1) / 2;//(vFrameD + hFrameD) / 2;
-    scene.add(bFrame);
-    //   左の枠
-    const lFrame = new THREE.Mesh(
-      new THREE.BoxGeometry(hFrameD, hFrameH, hFrameW),
-      new MeshPhongMaterial({ color: 0xB3B3B3 })
-    );
-    lFrame.position.x = -(vFrameD + hFrameD) / 2;//-(hFrameW - vFrameW) / 2;
-    scene.add(lFrame); 
-
-    //   右の枠
-    const rFrame = lFrame.clone();
-    rFrame.position.x = (vFrameD + hFrameD -2.5) / 2;//(hFrameW - vFrameW) / 2;
-    scene.add(rFrame); 
-
-  }
-
-  // 壁で止まる処理
-  const hLimit = vFrameD / 2;//hFrameW / 2 - vFrameW;
-  const vLimit = hFrameW / 2 - vFrameW;
-  function frameCheck() {
-    // 右の壁
-    if (ball.position.x > hLimit - 1.5) {
-      ball.position.x = hLimit -1.5 - ballR; // 壁の内側に位置を戻す
-      vx = 0; // x方向の速度を停止
-    }
-    // 左の壁
-    if (ball.position.x < -hLimit) {
-      ball.position.x = -hLimit + ballR;
-      vx = 0;
-    }
-    // 上の壁
-    if (ball.position.z < -vLimit) {
-      ball.position.z = -vLimit +ballR;
-      vz = 0; // z方向の速度を停止
-    }
-    // 下の壁
-    if (ball.position.z > vLimit) {
-      ball.position.z = vLimit - ballR;
-      vz = 0;
-    }
-  }
 
 
   let ghost;
@@ -204,24 +147,24 @@ function init() {
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     */
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
+    [1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     
   ];  
   
@@ -308,7 +251,11 @@ function createGhost() {
   scene.add(ghosts); // ゴーストグループをシーンに追加
 }
 
+
+  const ghostSpeed = 1.1; // ゴーストの速度
+  const ghostDirections = []; // 初期化
   createGhost();
+  GhostDirections();
 
 
   // 壁との衝突処理
@@ -391,9 +338,57 @@ function createGhost() {
     });
   }
 
+
+  function GhostDirections() {
+    // 各ゴーストにランダムな初期方向を設定
+    ghosts.children.forEach(() => {
+      ghostDirections.push(new THREE.Vector3(
+        Math.random() > 0.5 ? 1 : -1, // x方向
+        0,                           // y方向は常に0（平面上の移動）
+        Math.random() > 0.5 ? 1 : -1 // z方向
+      ));
+    });
+  }
+
+
+
+function moveGhost(delta) {
+  ghosts.children.forEach((ghost, index) => {
+    const direction = ghostDirections[index];
+    
+    // 現在の位置を計算
+    const newX = ghost.position.x + direction.x * ghostSpeed * delta;
+    const newZ = ghost.position.z + direction.z * ghostSpeed * delta;
+
+    // 次の位置で迷路の枠に衝突するか確認
+    const mazeRow = Math.round((newZ + boxSize * mazeLayout.length / 2) / boxSize);
+    const mazeCol = Math.round((newX + boxSize * mazeLayout[0].length / 2) / boxSize);
+
+    if (
+      mazeRow < 0 || mazeRow >= mazeLayout.length ||
+      mazeCol < 0 || mazeCol >= mazeLayout[0].length ||
+      mazeLayout[mazeRow][mazeCol] === 1 // 壁に衝突
+    ) {
+      // 方向を反射させる
+      if (mazeLayout[mazeRow][Math.round((ghost.position.x + boxSize * mazeLayout[0].length / 2) / boxSize)] === 1) {
+        direction.z *= -1; // z方向を反転
+      }
+      if (mazeLayout[Math.round((ghost.position.z + boxSize * mazeLayout.length / 2) / boxSize)][mazeCol] === 1) {
+        direction.x *= -1; // x方向を反転
+      }
+    } else {
+      // 衝突していない場合、移動
+      ghost.position.set(newX, ghost.position.y, newZ);
+    }
+  });
+}
+
+
+  
+
   // 光源の設定
   const light = new THREE.SpotLight(0xffffff, 1000);
-  light.position.set(0, 15, -10);
+  light.position.set(0, 15, 0);
   scene.add(light);
 
   // カメラの設定
@@ -421,28 +416,17 @@ function createGhost() {
     axes.visible = param.axes;
     // ゲーム画面の更新
     let delta = clock.getDelta(); // 経過時間の取得
-    frameCheck(); // 枠の衝突判定
     boxCheck();//点、壁との衝突判定
     dotCheck();
     moveBall(delta); // ボールの移動
     setScore(score); // スコア更新
     ghostCheck();
+    moveGhost(delta);
     // 再描画
     requestAnimationFrame(render);
     renderer.render(scene, camera);
   }
 
-  // アニメーションループ
-function animate(delta) {
-  if (ballLive) {
-    moveBall(delta);
-    frameCheck();
-    boxCheck();
-    dotCheck();
-  }
-  renderer.render(scene, camera);
-  requestAnimationFrame(animate);
-}
 
   // GUIコントローラ
   const gui = new GUI();
