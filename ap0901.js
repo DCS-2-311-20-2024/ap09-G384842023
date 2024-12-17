@@ -266,15 +266,15 @@ function createGhost() {
 
         if (boxBound.intersectsSphere(ballSphere)) {
           // ボールが壁に衝突
-          if (vx > 0 && ball.position.x < boxBound.min.x) {
+          if (ball.position.x < boxBound.min.x) {
             ball.position.x = boxBound.min.x - ballR;
-          } else if (vx < 0 && ball.position.x > boxBound.max.x) {
+          } else if (ball.position.x > boxBound.max.x) {
             ball.position.x = boxBound.max.x + ballR;
           }
 
-          if (vz > 0 && ball.position.z < boxBound.min.z) {
+          if (ball.position.z < boxBound.min.z) {
             ball.position.z = boxBound.min.z - ballR;
-          } else if (vz < 0 && ball.position.z > boxBound.max.z) {
+          } else if (ball.position.z > boxBound.max.z) {
             ball.position.z = boxBound.max.z + ballR;
           }
 
